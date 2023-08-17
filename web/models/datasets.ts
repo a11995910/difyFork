@@ -24,14 +24,18 @@ export type DataSet = {
   word_count: number
 }
 
-export type File = {
-  id: string
-  name: string
-  size: number
-  extension: string
-  mime_type: string
-  created_by: string
-  created_at: number
+export type CustomFile = File & {
+  id?: string
+  extension?: string
+  mime_type?: string
+  created_by?: string
+  created_at?: number
+}
+
+export type FileItem = {
+  fileID: string
+  file: CustomFile
+  progress: number
 }
 
 export type DataSetListResponse = {
@@ -136,6 +140,7 @@ export type DataSourceInfo = {
     created_by: string
     extension: string
   }
+  notion_page_icon?: string
 }
 
 export type InitialDocumentDetail = {
