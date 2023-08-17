@@ -251,7 +251,3 @@ services:
       - web
     ports:
       - "80:80"
-
-environment:
-  - http_proxy=http://127.0.0.1:7890
-  - https_proxy=https://127.0.0.1:7890
