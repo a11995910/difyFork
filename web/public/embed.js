@@ -15,7 +15,7 @@ async function embedChatbot () {
     return;
   }
   const isDev = !!difyChatbotConfig.isDev
-  const baseUrl = difyChatbotConfig.baseUrl || `https://${isDev ? 'dev.' : ''}udify.app`
+  const baseUrl = difyChatbotConfig.baseUrl || `https://${isDev ? 'dev.' : ''}192.168.0.60`
   const openIcon = `<svg
             id="openIcon"
             width="24"
@@ -87,4 +87,9 @@ async function embedChatbot () {
       }
     });
   }
+}
+
+// embed chatbot when the page is loaded
+if(document.readyState === 'complete') {
+  embedChatbot()
 }
