@@ -14,6 +14,7 @@ const translation = {
   join: 'SAGA.AI',
   communityIntro: '汇总集合全球主流的AI技术，提供多面、高效的GPT服务',
   roadmap: '产品路线图',
+  appNamePlaceholder: '请输入应用名称',
   newApp: {
     startToCreate: '开始创建一个新应用',
     captionName: '给应用起个名字',
@@ -34,6 +35,9 @@ const translation = {
     appTypeRequired: '请选择应用类型',
     appCreated: '应用已创建',
     appCreateFailed: '应用创建失败',
+  },
+  editApp: {
+    startToEdit: '编辑应用',
   },
   emoji: {
     ok: '确认',
