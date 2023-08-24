@@ -90,8 +90,6 @@ class AppListApi(Resource):
     }
 
     @setup_required
-    @login_required
-    @account_initialization_required
     @marshal_with(app_pagination_fields)
     def get(self):
         """Get app list"""
@@ -101,8 +99,7 @@ class AppListApi(Resource):
         args = parser.parse_args()
 
         app_models = db.paginate(
-            db.select(App).where(App.tenant_id == current_user.current_tenant_id,
-                                 App.is_universal == False).order_by(App.created_at.desc()),
+            db.select(App).where(App.is_universal == False).order_by(App.created_at.desc()),
             page=args['page'],
             per_page=args['limit'],
             error_out=False)
@@ -110,7 +107,6 @@ class AppListApi(Resource):
         return app_models
 
     @setup_required
-    @login_required
     @account_initialization_required
     @marshal_with(app_detail_fields)
     def post(self):
@@ -297,8 +293,6 @@ class AppApi(Resource):
     }
 
     @setup_required
-    @login_required
-    @account_initialization_required
     @marshal_with(app_detail_fields_with_site)
     def get(self, app_id):
         """Get app detail"""

@@ -574,7 +574,7 @@ const Main: FC<IMainProps> = ({
     return <Loading type='app' />
 
   return (
-    <div className='bg-gray-100'>
+    <div className='bg-gray-100 height100' >
       {!isInstalledApp && (
         <Header
           title={siteInfo.title}

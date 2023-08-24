@@ -1,3 +1,6 @@
 .installedApp {
   height: calc(100vh - 74px);
 }
+.height100{
+  height: 100%;
+}

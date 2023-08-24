@@ -22,8 +22,11 @@
 }
 
 .logo {
-  width: 48px;
-  height: 20px;
+  width: 70px;
+  height: 60px;
   background: url(./icons/logo.png) center center no-repeat;
   background-size: contain;
+}
+.height100 {
+  height: 100%;
 }
