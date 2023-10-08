@@ -236,6 +236,24 @@ export type App = {
 }
 
 /**
+ * Appcard
+ */
+export type Appcard = {
+  /** App ID */
+  id: string
+  /** Name */
+  name: string
+
+  /** Icon */
+  icon: string
+  /** Icon Background */
+  icon_background: string
+
+  /** Mode */
+  mode: AppMode
+}
+
+/**
  * App Template
  */
 export type AppTemplate = {
@@ -247,4 +265,5 @@ export type AppTemplate = {
   mode: AppMode
   /** Model */
   model_config: ModelConfig
+  link: string
 }

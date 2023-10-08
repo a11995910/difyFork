@@ -6,13 +6,11 @@ import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import style from '../(commonLayout)/list.module.css'
 import AppModeLabel from '../(commonLayout)/apps/AppModeLabel'
-import type { App } from '@/types/app'
-import Confirm from '@/app/components/base/confirm'
+import type { App } from '@/types/appcard'
 import { ToastContext } from '@/app/components/base/toast'
-import { deleteApp, fetchAppDetail } from '@/service/apps'
+import { deleteApp } from '@/service/apps'
 import AppIcon from '@/app/components/base/app-icon'
-import AppsContext, { useAppContext } from '@/context/app-context'
-import { asyncRunSafe } from '@/utils'
+import AppsContext from '@/context/app-context'
 
 export type AppCardProps = {
   app: App
@@ -22,7 +20,6 @@ export type AppCardProps = {
 const AppCard = ({ app, onRefresh }: AppCardProps) => {
   const { t } = useTranslation()
   const { notify } = useContext(ToastContext)
-  const { isCurrentWorkspaceManager } = useAppContext()
 
   const mutateApps = useContextSelector(
     AppsContext,
@@ -55,22 +52,10 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
     setShowConfirmDelete(false)
   }, [app.id])
 
-  const getAppDetail = async () => {
-    setDetailState({ loading: true })
-    const [err, res] = await asyncRunSafe<App>(
-      fetchAppDetail({ url: '/apps', id: app.id }) as Promise<App>,
-    )
-    if (!err) {
-      setDetailState({ loading: false, detail: res })
-      setShowSettingsModal(true)
-    }
-    else { setDetailState({ loading: false }) }
-  }
-
   return (
     <>
       <Link
-        href={`/app/${app.id}/overview`}
+        href={`/chat/${app.link}`}
         className={style.listItem}
       >
         <div className={style.listItemTitle}>
@@ -89,17 +74,6 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
         <div className={style.listItemFooter}>
           <AppModeLabel mode={app.mode} />
         </div>
-
-        {showConfirmDelete && (
-          <Confirm
-            title={t('app.deleteAppConfirmTitle')}
-            content={t('app.deleteAppConfirmContent')}
-            isShow={showConfirmDelete}
-            onClose={() => setShowConfirmDelete(false)}
-            onConfirm={onConfirmDelete}
-            onCancel={() => setShowConfirmDelete(false)}
-          />
-        )}
       </Link>
     </>
   )
