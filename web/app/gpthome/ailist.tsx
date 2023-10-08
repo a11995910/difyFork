@@ -10,7 +10,31 @@ const AiList = () => {
       icon_background: '#FFEAD5',
       mode: 'chat',
       name: 'chatGPT-3.5',
-      link: 'bExiuiVEyNZWh9JL',
+      link: 'qjLUCoZuUm8WRcZt',
+    },
+    {
+      id: '6904e7a0-493e-41af-92fd-0c6ecadffa9f',
+      icon: '🤖',
+      icon_background: '#FFEAD5',
+      mode: 'chat',
+      name: 'SAGA-GPT',
+      link: 'BSZ9lta5mgVIdo5J',
+    },
+    {
+      id: '6904e7a0-493e-41af-92fd-0c6ecadffa9f',
+      icon: '🤖',
+      icon_background: '#FFEAD5',
+      mode: 'chat',
+      name: '文心一言',
+      link: 'h1R6ClasNPNie53v',
+    },
+    {
+      id: '6904e7a0-493e-41af-92fd-0c6ecadffa9f',
+      icon: '🤖',
+      icon_background: '#FFEAD5',
+      mode: 'chat',
+      name: '讯飞星火',
+      link: 'hrNnwrMQkQxbzKjz',
     },
   ]
   return (
