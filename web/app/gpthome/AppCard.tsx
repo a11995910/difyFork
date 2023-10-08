@@ -4,19 +4,14 @@ import { useContext, useContextSelector } from 'use-context-selector'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import cn from 'classnames'
 import style from '../(commonLayout)/list.module.css'
 import AppModeLabel from '../(commonLayout)/apps/AppModeLabel'
-import s from './style.module.css'
-import SettingsModal from '@/app/components/app/overview/settings'
 import type { App } from '@/types/app'
 import Confirm from '@/app/components/base/confirm'
 import { ToastContext } from '@/app/components/base/toast'
-import { deleteApp, fetchAppDetail, updateAppSiteConfig } from '@/service/apps'
+import { deleteApp, fetchAppDetail } from '@/service/apps'
 import AppIcon from '@/app/components/base/app-icon'
 import AppsContext, { useAppContext } from '@/context/app-context'
-import CustomPopover from '@/app/components/base/popover'
-import Divider from '@/app/components/base/divider'
 import { asyncRunSafe } from '@/utils'
 
 export type AppCardProps = {
@@ -72,63 +67,6 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
     else { setDetailState({ loading: false }) }
   }
 
-  const onSaveSiteConfig = useCallback(
-    async (params: any) => {
-      const [err] = await asyncRunSafe<App>(
-        updateAppSiteConfig({
-          url: `/apps/${app.id}/site`,
-          body: params,
-        }) as Promise<App>,
-      )
-      if (!err) {
-        notify({
-          type: 'success',
-          message: t('common.actionMsg.modifiedSuccessfully'),
-        })
-        if (onRefresh)
-          onRefresh()
-        mutateApps()
-      }
-      else {
-        notify({
-          type: 'error',
-          message: t('common.actionMsg.modificationFailed'),
-        })
-      }
-    },
-    [app.id],
-  )
-
-  const Operations = (props: any) => {
-    const onClickSettings = async (e: any) => {
-      props?.onClose()
-      e.preventDefault()
-      await getAppDetail()
-    }
-    const onClickDelete = async (e: any) => {
-      props?.onClose()
-      e.preventDefault()
-      setShowConfirmDelete(true)
-    }
-    return (
-      <div className="w-full py-1">
-        <button className={s.actionItem} onClick={onClickSettings} disabled={detailState.loading}>
-          <span className={s.actionName}>{t('common.operation.settings')}</span>
-        </button>
-
-        <Divider className="!my-1" />
-        <div
-          className={cn(s.actionItem, s.deleteActionItem, 'group')}
-          onClick={onClickDelete}
-        >
-          <span className={cn(s.actionName, 'group-hover:text-red-500')}>
-            {t('common.operation.delete')}
-          </span>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <>
       <Link
@@ -144,19 +82,6 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
           <div className={style.listItemHeading}>
             <div className={style.listItemHeadingContent}>{app.name}</div>
           </div>
-          {isCurrentWorkspaceManager && <CustomPopover
-            htmlContent={<Operations />}
-            position="br"
-            trigger="click"
-            btnElement={<div className={cn(s.actionIcon, s.commonIcon)} />}
-            btnClassName={open =>
-              cn(
-                open ? '!bg-gray-100 !shadow-none' : '!bg-transparent',
-                style.actionIconWrapper,
-              )
-            }
-            className={'!w-[128px] h-fit !z-20'}
-          />}
         </div>
         <div className={style.listItemDescription}>
           {app.model_config?.pre_prompt}
@@ -173,14 +98,6 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
             onClose={() => setShowConfirmDelete(false)}
             onConfirm={onConfirmDelete}
             onCancel={() => setShowConfirmDelete(false)}
-          />
-        )}
-        {showSettingsModal && detailState.detail && (
-          <SettingsModal
-            appInfo={detailState.detail}
-            isShow={showSettingsModal}
-            onClose={() => setShowSettingsModal(false)}
-            onSave={onSaveSiteConfig}
           />
         )}
       </Link>
