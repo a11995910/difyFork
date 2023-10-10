@@ -3,7 +3,6 @@ import { Fragment, useCallback, useMemo, useState } from 'react'
 import { useContext } from 'use-context-selector'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { useTranslation } from 'react-i18next'
-import { ReactMultiEmail } from 'react-multi-email'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/20/solid'
 import cn from 'classnames'
@@ -72,25 +71,7 @@ const InviteModal = ({
         <div>
           <div className='mb-2 text-sm font-medium text-gray-900'>{t('common.members.email')}</div>
           <div className='mb-8 h-36 flex items-stretch'>
-            <ReactMultiEmail
-              className={cn('w-full pt-2 px-3 outline-none border-none',
-                'appearance-none text-sm text-gray-900 rounded-lg overflow-y-auto',
-                s.emailsInput,
-              )}
-              autoFocus
-              emails={emails}
-              inputClassName='bg-transparent'
-              onChange={setEmails}
-              getLabel={(email, index, removeEmail) =>
-                <div data-tag key={index} className={cn(s.emailBackground)}>
-                  <div data-tag-item>{email}</div>
-                  <span data-tag-handle onClick={() => removeEmail(index)}>
-                      ×
-                  </span>
-                </div>
-              }
-              placeholder={t('common.members.emailPlaceholder') || ''}
-            />
+
           </div>
           <Listbox value={role} onChange={setRole}>
             <div className="relative pb-6">
