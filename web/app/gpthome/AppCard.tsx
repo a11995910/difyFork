@@ -55,7 +55,7 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
   return (
     <>
       <Link
-        href={`/chat/${app.link}`}
+        href={app.link.includes('http') ? app.link : `/chat/${app.link}`}
         className={style.listItem}
       >
         <div className={style.listItemTitle}>
