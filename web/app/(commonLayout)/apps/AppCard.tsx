@@ -9,12 +9,14 @@ import style from '../list.module.css'
 import AppModeLabel from './AppModeLabel'
 import s from './style.module.css'
 import SettingsModal from '@/app/components/app/overview/settings'
+import type { ConfigParams } from '@/app/components/app/overview/settings'
 import type { App } from '@/types/app'
 import Confirm from '@/app/components/base/confirm'
 import { ToastContext } from '@/app/components/base/toast'
 import { deleteApp, fetchAppDetail, updateAppSiteConfig } from '@/service/apps'
 import AppIcon from '@/app/components/base/app-icon'
 import AppsContext, { useAppContext } from '@/context/app-context'
+import type { HtmlContentProps } from '@/app/components/base/popover'
 import CustomPopover from '@/app/components/base/popover'
 import Divider from '@/app/components/base/divider'
 import { asyncRunSafe } from '@/utils'
@@ -62,8 +64,8 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
 
   const getAppDetail = async () => {
     setDetailState({ loading: true })
-    const [err, res] = await asyncRunSafe<App>(
-      fetchAppDetail({ url: '/apps', id: app.id }) as Promise<App>,
+    const [err, res] = await asyncRunSafe(
+      fetchAppDetail({ url: '/apps', id: app.id }),
     )
     if (!err) {
       setDetailState({ loading: false, detail: res })
@@ -73,12 +75,12 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
   }
 
   const onSaveSiteConfig = useCallback(
-    async (params: any) => {
-      const [err] = await asyncRunSafe<App>(
+    async (params: ConfigParams) => {
+      const [err] = await asyncRunSafe(
         updateAppSiteConfig({
           url: `/apps/${app.id}/site`,
           body: params,
-        }) as Promise<App>,
+        }),
       )
       if (!err) {
         notify({
@@ -92,21 +94,21 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
       else {
         notify({
           type: 'error',
-          message: t('common.actionMsg.modificationFailed'),
+          message: t('common.actionMsg.modifiedUnsuccessfully'),
         })
       }
     },
     [app.id],
   )
 
-  const Operations = (props: any) => {
-    const onClickSettings = async (e: any) => {
-      props?.onClose()
+  const Operations = (props: HtmlContentProps) => {
+    const onClickSettings = async (e: React.MouseEvent<HTMLButtonElement>) => {
+      props.onClick?.()
       e.preventDefault()
       await getAppDetail()
     }
-    const onClickDelete = async (e: any) => {
-      props?.onClose()
+    const onClickDelete = async (e: React.MouseEvent<HTMLDivElement>) => {
+      props.onClick?.()
       e.preventDefault()
       setShowConfirmDelete(true)
     }
@@ -156,6 +158,7 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
               )
             }
             className={'!w-[128px] h-fit !z-20'}
+            manualClose
           />}
         </div>
         <div className={style.listItemDescription}>

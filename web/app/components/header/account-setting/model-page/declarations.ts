@@ -39,6 +39,10 @@ export enum ProviderEnum {
   'spark' = 'spark',
   'minimax' = 'minimax',
   'chatglm' = 'chatglm',
+  'xinference' = 'xinference',
+  'openllm' = 'openllm',
+  'localai' = 'localai',
+  'zhipuai' = 'zhipuai',
 }
 
 export type ProviderConfigItem = {
@@ -89,6 +93,7 @@ export type ProviderConfigModal = {
   icon: ReactElement
   defaultValue?: FormValue
   validateKeys?: string[] | ((v?: FormValue) => string[])
+  filterValue?: (v?: FormValue) => FormValue
   fields: Field[]
   link: {
     href: string

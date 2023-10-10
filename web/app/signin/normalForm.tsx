@@ -21,7 +21,11 @@ type IState = {
   google: boolean
 }
 
-function reducer(state: IState, action: { type: string; payload: any }) {
+type IAction = {
+  type: 'login' | 'login_failed' | 'github_login' | 'github_login_failed' | 'google_login' | 'google_login_failed'
+}
+
+function reducer(state: IState, action: IAction) {
   switch (action.type) {
     case 'login':
       return {
@@ -84,7 +88,7 @@ const NormalForm = () => {
     }
     try {
       setIsLoading(true)
-      await login({
+      const res = await login({
         url: '/login',
         body: {
           email,
@@ -92,7 +96,8 @@ const NormalForm = () => {
           remember_me: true,
         },
       })
-      router.push('/apps')
+      localStorage.setItem('console_token', res.data)
+      router.replace('/apps')
     }
     finally {
       setIsLoading(false)
@@ -119,14 +124,14 @@ const NormalForm = () => {
 
   useEffect(() => {
     if (github_error !== undefined)
-      dispatch({ type: 'github_login_failed', payload: null })
+      dispatch({ type: 'github_login_failed' })
     if (github)
       window.location.href = github.redirect_url
   }, [github, github_error])
 
   useEffect(() => {
     if (google_error !== undefined)
-      dispatch({ type: 'google_login_failed', payload: null })
+      dispatch({ type: 'google_login_failed' })
     if (google)
       window.location.href = google.redirect_url
   }, [google, google])
@@ -236,6 +241,10 @@ const NormalForm = () => {
                       id="password"
                       value={password}
                       onChange={e => setPassword(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter')
+                          handleEmailPasswordLogin()
+                      }}
                       type={showPassword ? 'text' : 'password'}
                       autoComplete="current-password"
                       placeholder={t('login.passwordPlaceholder') || ''}
@@ -255,6 +264,7 @@ const NormalForm = () => {
 
                 <div className='mb-2'>
                   <Button
+                    tabIndex={0}
                     type='primary'
                     onClick={handleEmailPasswordLogin}
                     disabled={isLoading}

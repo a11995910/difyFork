@@ -1,14 +1,14 @@
 # -*- coding:utf-8 -*-
-import json
 
 from flask import request
 from flask_restful import Resource
-from flask_login import login_required, current_user
+from flask_login import current_user
 
 from controllers.console import api
 from controllers.console.app import _get_app
 from controllers.console.setup import setup_required
 from controllers.console.wraps import account_initialization_required
+from libs.login import login_required
 from events.app_event import app_model_config_was_updated
 from extensions.ext_database import db
 from models.model import AppModelConfig
@@ -30,7 +30,8 @@ class ModelConfigResource(Resource):
         model_configuration = AppModelConfigService.validate_configuration(
             tenant_id=current_user.current_tenant_id,
             account=current_user,
-            config=request.json
+            config=request.json,
+            mode=app_model.mode
         )
 
         new_app_model_config = AppModelConfig(

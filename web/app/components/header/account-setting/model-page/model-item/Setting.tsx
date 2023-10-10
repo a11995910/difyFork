@@ -34,7 +34,7 @@ const Setting: FC<SettingProps> = ({
   return (
     <div className='flex items-center'>
       {
-        (modelItem.key === ProviderEnum.minimax || modelItem.key === ProviderEnum.spark) && systemFree && !systemFree?.is_valid && !IS_CE_EDITION && locale === 'zh-Hans' && (
+        (modelItem.key === ProviderEnum.minimax || modelItem.key === ProviderEnum.spark || modelItem.key === ProviderEnum.zhipuai) && systemFree && !systemFree?.is_valid && !IS_CE_EDITION && locale === 'zh-Hans' && (
           <FreeQuota
             modelItem={modelItem}
             onUpdate={onUpdate}
@@ -59,8 +59,9 @@ const Setting: FC<SettingProps> = ({
       {
         configurable && (
           <Button
-            className={`!px-3 !h-7 rounded-md bg-white !text-xs font-medium text-gray-700 ${!!modelItem.disable && '!text-gray-300'}`}
+            className={`!px-3 !h-7 rounded-md bg-white !text-xs font-medium text-gray-700 ${!!modelItem.disable && !IS_CE_EDITION && '!text-gray-300'}`}
             onClick={() => onOpenModal()}
+            disabled={!!modelItem.disable && !IS_CE_EDITION}
           >
             {t('common.operation.add')}
           </Button>

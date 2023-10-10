@@ -18,6 +18,7 @@ class WenxinModel(BaseLLM):
         provider_model_kwargs = self._to_model_kwargs_input(self.model_rules, self.model_kwargs)
         # TODO load price_config from configs(db)
         return Wenxin(
+            model=self.name,
             streaming=self.streaming,
             callbacks=self.callbacks,
             **self.credentials,
@@ -57,7 +58,3 @@ class WenxinModel(BaseLLM):
 
     def handle_exceptions(self, ex: Exception) -> Exception:
         return LLMBadRequestError(f"Wenxin: {str(ex)}")
-
-    @classmethod
-    def support_streaming(cls):
-        return False

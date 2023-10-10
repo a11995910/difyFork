@@ -19,7 +19,7 @@ type NewSegmentModalProps = {
   onSave: () => void
 }
 
-const NewSegmentModal: FC<NewSegmentModalProps> = memo(({
+const NewSegmentModal: FC<NewSegmentModalProps> = ({
   isShow,
   onCancel,
   docForm,
@@ -31,6 +31,7 @@ const NewSegmentModal: FC<NewSegmentModalProps> = memo(({
   const [answer, setAnswer] = useState('')
   const { datasetId, documentId } = useParams()
   const [keywords, setKeywords] = useState<string[]>([])
+  const [loading, setLoading] = useState(false)
 
   const handleCancel = () => {
     setQuestion('')
@@ -60,10 +61,16 @@ const NewSegmentModal: FC<NewSegmentModalProps> = memo(({
     if (keywords?.length)
       params.keywords = keywords
 
-    await addSegment({ datasetId, documentId, body: params })
-    notify({ type: 'success', message: t('common.actionMsg.modifiedSuccessfully') })
-    handleCancel()
-    onSave()
+    setLoading(true)
+    try {
+      await addSegment({ datasetId, documentId, body: params })
+      notify({ type: 'success', message: t('common.actionMsg.modifiedSuccessfully') })
+      handleCancel()
+      onSave()
+    }
+    finally {
+      setLoading(false)
+    }
   }
 
   const renderContent = () => {
@@ -136,13 +143,15 @@ const NewSegmentModal: FC<NewSegmentModalProps> = memo(({
           <Button
             type='primary'
             className='!h-9 !px-4 !py-2 text-sm font-medium !rounded-lg'
-            onClick={handleSave}>
+            onClick={handleSave}
+            disabled={loading}
+          >
             {t('common.operation.save')}
           </Button>
         </div>
       </div>
     </Modal>
   )
-})
+}
 
-export default NewSegmentModal
+export default memo(NewSegmentModal)

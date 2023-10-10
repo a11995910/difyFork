@@ -19,7 +19,7 @@ from models.dataset import Dataset, DocumentSegment, DatasetQuery
 class HitTestingService:
     @classmethod
     def retrieve(cls, dataset: Dataset, query: str, account: Account, limit: int = 10) -> dict:
-        if dataset.available_document_count == 0 or dataset.available_document_count == 0:
+        if dataset.available_document_count == 0 or dataset.available_segment_count == 0:
             return {
                 "query": {
                     "content": query,
@@ -47,7 +47,10 @@ class HitTestingService:
             query,
             search_type='similarity_score_threshold',
             search_kwargs={
-                'k': 10
+                'k': 10,
+                'filter': {
+                    'group_id': [dataset.id]
+                }
             }
         )
         end = time.perf_counter()
