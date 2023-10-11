@@ -247,7 +247,7 @@ export type Appcard = {
   id: string
   /** Name */
   name: string
-
+  intro: string
   /** Icon */
   icon: string
   /** Icon Background */

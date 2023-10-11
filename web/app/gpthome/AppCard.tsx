@@ -69,7 +69,7 @@ const AppCard = ({ app, onRefresh }: AppCardProps) => {
           </div>
         </div>
         <div className={style.listItemDescription}>
-          {app.model_config?.pre_prompt}
+          {app.intro}
         </div>
         <div className={style.listItemFooter}>
           <AppModeLabel mode={app.mode} />
