@@ -3,6 +3,7 @@ import React from 'react'
 import AppCardList from './AppCardList'
 import style from './style.module.css'
 
+document.title = 'SAGA.AI'
 const AiList = () => {
   const appList = [{
     apps: [
